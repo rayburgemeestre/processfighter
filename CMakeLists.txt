@@ -23,19 +23,19 @@ endif()
 
 add_definitions(${COMPILE_FLAGS})
 
-include_directories("./include/")
+include_directories("./include/" "./")
 file(GLOB_RECURSE processfighter_SOURCES "src/**.cpp" "include/**.h*")
 add_executable(processfighter ${processfighter_SOURCES})
 
 target_link_libraries(processfighter ${SFML_LIBRARIES})
+target_link_libraries(processfighter ${PROJECT_SOURCE_DIR}/libs/tiny-process-library/build/libtiny-process-library.a)
 
 install (TARGETS processfighter DESTINATION bin)
 
 file(GLOB_RECURSE processfighter_test_SOURCES "")
-file(GLOB TEST_FILES "test/*.cpp")
+file(GLOB TEST_FILES "test/*.cpp" "src/game_state.cpp")
 # Don't include Main.cpp from src
-file(GLOB MAIN_SRC "src/main.cpp")
-add_executable(processfighter_tests ${TEST_FILES} ${processfighter_test_SOURCES})
+add_executable(processfighter_tests ${MAIN_SRC} ${TEST_FILES} ${processfighter_test_SOURCES})
 # Set link libraries (order matters)
 target_link_libraries(processfighter_tests libgtest)
 target_link_libraries(processfighter_tests libgmock)
