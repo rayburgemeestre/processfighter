@@ -9,9 +9,10 @@
 
 struct opponent_type
 {
-  size_t id;
+  size_t requesting_id;
   std::string name;
   std::string ip;
+  sf::Int16 port;
 };
 
 class probing : public state_interface
@@ -30,4 +31,5 @@ public:
 private:
   std::vector<opponent_type> opponents_;
   std::vector<opponent_type> opponents_probed_;
+
 };

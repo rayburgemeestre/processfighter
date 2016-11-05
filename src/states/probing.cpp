@@ -55,7 +55,8 @@ void probing::handle(std::vector<std::unique_ptr<messages::message_interface>> m
     if (probe_response_msg) {
       opponents_probed_.push_back(opponent_type{probe_response_msg->requesting_id(),
                                                 probe_response_msg->name(),
-                                                probe_response_msg->ipaddr().toString()});
+                                                probe_response_msg->ipaddr().toString(),
+                                                probe_response_msg->source_port()});
     }
   }
 }
@@ -71,9 +72,10 @@ void probing::tick()
     auto selecting_state = dynamic_cast<selecting *>(new_state.get());
     if (selecting_state) {
       for (auto &opponent : opponents_probed_) {
-        selecting_state->add_opponent(probed_opponent_type{opponent.id,
+        selecting_state->add_opponent(probed_opponent_type{opponent.requesting_id,
                                                            opponent.name,
                                                            opponent.ip,
+                                                           opponent.port,
                                                            probed_opponent_type::probed_opponent_state::idle});
       }
     }

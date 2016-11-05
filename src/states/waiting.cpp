@@ -6,6 +6,8 @@
 #include <sstream>
 #include "utils/menu.h"
 #include "states.h"
+#include "messages.h"
+#include "global_game_state.h"
 
 extern int window_width;
 extern int window_height;
@@ -18,6 +20,10 @@ waiting::waiting(global_game_state &gs)
 void waiting::initialize()
 {
   std::cout << "Should challenge opponent: " << opponent_.name << std::endl;
+
+  messages::challenge c(global_game_state_);
+  global_game_state_.send_socket().send(c.packet(), opponent_.ip, opponent_.port);
+
 }
 
 void waiting::set_opponent(probed_opponent_type opp)

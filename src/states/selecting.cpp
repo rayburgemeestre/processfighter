@@ -55,7 +55,17 @@ void selecting::handle(std::vector<std::unique_ptr<messages::message_interface>>
       opponents_.push_back(probed_opponent_type{probe_response_msg->requesting_id(),
                                                 probe_response_msg->name(),
                                                 probe_response_msg->ipaddr().toString(),
+                                                probe_response_msg->source_port(),
                                                 probed_opponent_type::probed_opponent_state::idle});
+    }
+    auto challenge_msg = dynamic_cast<messages::challenge *>(msg.get());
+    if (challenge_msg) {
+      probed_opponent_type opponent{challenge_msg->requesting_id(),
+                                    challenge_msg->name(),
+                                    challenge_msg->ipaddr().toString(),
+                                    challenge_msg->source_port(),
+                                    probed_opponent_type::probed_opponent_state::idle};
+      global_game_state_.console_out().log("I am challenged by " + opponent.name);
     }
   }
 }

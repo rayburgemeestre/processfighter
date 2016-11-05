@@ -34,7 +34,7 @@ void initializing::initialize()
         string name, ip;
         getline(ss, name, '\t');
         getline(ss, ip, '\t');
-        probing_state->probe_opponent(opponent_type{size_t(0), name, ip});
+        probing_state->probe_opponent(opponent_type{0, name, ip, 0});
       }
     };
     process proc("arp -a | sed 's/\\(.*\\) (\\(.*\\)).*/\\1\\t\\2/'", "", process_arp_line);

@@ -17,7 +17,9 @@ namespace messages
     shutdown = 0,
 
     probe = 1000,
-    probe_response
+    probe_response,
+
+    challenge = 2000
   };
 
   class message_interface
@@ -64,6 +66,16 @@ namespace messages
   {
   public:
     probe_response(global_game_state & state);
+    bool parse_msg(sf::Packet & packet_in) override;
+    std::string name();
+  private:
+    std::string name_;
+  };
+
+  class challenge : public message_interface
+  {
+  public:
+    challenge(global_game_state & state);
     bool parse_msg(sf::Packet & packet_in) override;
     std::string name();
   private:

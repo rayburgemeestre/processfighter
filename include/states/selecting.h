@@ -16,6 +16,7 @@ struct probed_opponent_type
   size_t id;
   std::string name;
   std::string ip;
+  sf::Int16 port;
   probed_opponent_state opponent_state;
 };
 

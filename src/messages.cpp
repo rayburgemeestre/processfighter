@@ -81,5 +81,19 @@ namespace messages {
     return name_;
   }
 
+  challenge::challenge(global_game_state &state) : message_interface(state, message_types::challenge)
+  {
+    packet_ << global_state_.name();
+  }
+  bool challenge::parse_msg(sf::Packet &packet_in)
+  {
+    if (!(packet_in >> name_))
+      return false;
 
+    return true;
+  }
+  std::string challenge::name()
+  {
+    return name_;
+  }
 }
