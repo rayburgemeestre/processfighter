@@ -25,7 +25,6 @@ public:
 
   void run()
   {
-
     sf::RenderWindow window(sf::VideoMode(window_width, window_height), "Process Fighter");
     sf::CircleShape shape(10.f);
     shape.setFillColor(sf::Color::Green);

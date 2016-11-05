@@ -15,7 +15,7 @@ TEST(GameTest, test_state_initial) {
 TEST(GameTest, test_state_transition_next) {
   game_state g;
   g.transition(game_state::transition_type::next);
-  ASSERT_EQ(g.state(), game_state::state_type::selecting);
+  ASSERT_EQ(g.state(), game_state::state_type::probing);
 }
 
 TEST(GameTest, test_state_transition_invalid_next) {
@@ -30,4 +30,12 @@ TEST(GameTest, test_state_transition_invalid_next) {
   catch (...) {
     FAIL() << "expected runtime_error";
   }
+}
+
+TEST(GameTest, test_state_transition_waiting) {
+  game_state g;
+  g.transition(game_state::transition_type::next); // probing
+  g.transition(game_state::transition_type::next); // selecting
+  g.transition(game_state::transition_type::select); // selecting
+  ASSERT_EQ(g.state(), game_state::state_type::waiting);
 }

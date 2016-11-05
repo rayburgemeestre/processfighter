@@ -8,7 +8,7 @@
 #include "global_game_state.h"
 #include "utils/menu.h"
 #include "states.h"
-#include "states/initializing.h"
+#include "states/waiting.h"
 
 
 extern int window_width;
@@ -72,6 +72,14 @@ void selecting::draw(sf::RenderTarget &renderTarget)
     auto new_state = states::factory(state.transition(game_state::transition_type::refresh), global_game_state_);
     next_state_ = std::move(new_state);
   });
+
+  std::stringstream ss;
+  ss << "Challenge: " << global_game_state_.name() << " (localhost)";
+  auto str = ss.str();
+  m.add_item(str, [&](){
+    global_game_state_.console_out().log("You cannot challenge yourself!");
+  });
+
   for (auto &opp: opponents_) {
     std::stringstream ss;
     ss << "Challenge: " << opp.name << " (" << opp.ip << ")";
@@ -79,7 +87,13 @@ void selecting::draw(sf::RenderTarget &renderTarget)
     m.add_item(str, [&, opp](){
       std::cout << "You have selected: " << opp.id << " " << opp.name << " " << opp.ip << std::endl;
       std::cout << "Waiting for his accept/decline..." << std::endl;
-      // TODO: go to waiting state and challenge opponent with packet in initialize()
+      game_state state(state_);
+      auto new_state = states::factory(state.transition(game_state::transition_type::select), global_game_state_);
+      auto waiting_state = dynamic_cast<waiting *>(new_state.get());
+      if (waiting_state) {
+        waiting_state->set_opponent(opp);
+        next_state_ = std::move(new_state);
+      }
     });
   }
   m.add_item("Exit", [](){

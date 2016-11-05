@@ -5,8 +5,9 @@
  */
 #include "states.h"
 #include "states/initializing.h"
-#include "states/selecting.h"
 #include "states/probing.h"
+#include "states/selecting.h"
+#include "states/waiting.h"
 
 std::unique_ptr<state_interface> states::factory(game_state::state_type state, global_game_state &gs)
 {
@@ -17,6 +18,8 @@ std::unique_ptr<state_interface> states::factory(game_state::state_type state, g
       return std::make_unique<probing>(gs);
     case game_state::state_type::selecting:
       return std::make_unique<selecting>(gs);
+    case game_state::state_type::waiting:
+      return std::make_unique<waiting>(gs);
     default:
       break;
   }
