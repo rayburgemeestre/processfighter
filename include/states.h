@@ -10,8 +10,10 @@
 #include "game_state.h"
 #include "state_interface.hpp"
 
+class global_game_state;
+
 class states
 {
 public:
-  static std::unique_ptr<state_interface> factory(game_state::state_type state);
+  static std::unique_ptr<state_interface> factory(game_state::state_type state, global_game_state &gs);
 };

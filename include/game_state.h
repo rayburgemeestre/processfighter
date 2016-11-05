@@ -16,6 +16,7 @@ public:
     initializing,
     probing,
     selecting,
+    challenged,
     waiting,
     countdown,
     fighting,
@@ -25,6 +26,8 @@ public:
   enum class transition_type
   {
     next,
+
+    challenge,
 
     refresh,
     select,

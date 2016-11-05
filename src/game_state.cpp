@@ -14,9 +14,9 @@ game_state::game_state(state_type initial_state) :
   transitions_{
     std::make_tuple(state_type::initializing, transition_type::next, state_type::probing),
     std::make_tuple(state_type::probing, transition_type::next, state_type::selecting),
+    std::make_tuple(state_type::selecting, transition_type::challenge, state_type::challenged),
     std::make_tuple(state_type::selecting, transition_type::select, state_type::waiting),
     std::make_tuple(state_type::selecting, transition_type::refresh, state_type::initializing),
-    std::make_tuple(state_type::selecting, transition_type::select, state_type::waiting),
     std::make_tuple(state_type::waiting, transition_type::bail, state_type::initializing),
     std::make_tuple(state_type::waiting, transition_type::decline, state_type::initializing),
     std::make_tuple(state_type::waiting, transition_type::accept, state_type::countdown),

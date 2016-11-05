@@ -9,21 +9,21 @@ using process = Process;
 
 #include <SFML/Graphics.hpp>
 
+#include "global_game_state.h"
 #include "utils/console.h"
 
-extern console out;
 
-initializing::initializing()
-  : state_interface(game_state::state_type::initializing)
+initializing::initializing(global_game_state &gs)
+  : state_interface(gs, game_state::state_type::initializing)
 {
 }
 
 void initializing::initialize()
 {
-  out.log("Running arp to discover possible players on the network");
+  global_game_state_.console_out().log("Running arp to discover possible players on the network");
   using namespace std;
   game_state state(state_);
-  auto new_state = states::factory(state.transition(game_state::transition_type::next));
+  auto new_state = states::factory(state.transition(game_state::transition_type::next), global_game_state_);
   auto probing_state = dynamic_cast<probing *>(new_state.get());
   if (probing_state) {
     auto process_arp_line = [&](const char *bytes, size_t n) {
@@ -34,7 +34,7 @@ void initializing::initialize()
         string name, ip;
         getline(ss, name, '\t');
         getline(ss, ip, '\t');
-        probing_state->probe_opponent(opponent_type{name, ip});
+        probing_state->probe_opponent(opponent_type{size_t(0), name, ip});
       }
     };
     process proc("arp -a | sed 's/\\(.*\\) (\\(.*\\)).*/\\1\\t\\2/'", "", process_arp_line);
@@ -46,9 +46,17 @@ void initializing::initialize()
       return;
     }
     // for debugging purposes add local dev machine
-    probing_state->probe_opponent(opponent_type{"memyself", "10.75.99.6"});
+    probing_state->probe_opponent(opponent_type{global_game_state_.unique_id(), "memyself", "10.75.99.6"});
     next_state_ = std::move(new_state);
   }
+}
+
+void initializing::handle(std::vector<std::unique_ptr<messages::message_interface>> msgs)
+{
+}
+
+void initializing::tick()
+{
 }
 
 void initializing::draw(sf::RenderTarget &renderTarget)

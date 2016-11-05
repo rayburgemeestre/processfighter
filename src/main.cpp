@@ -11,47 +11,68 @@
 #include "game_state.h"
 #include "states.h"
 #include "utils/console.h"
-#include "receiving_socket.hpp"
+#include "global_game_state.h"
 
-// TODO: put this in some sensible place
-sf::UdpSocket main_socket;
-sf::UdpSocket main_sending_socket;
-console out;
+// TODO: perhaps make this configurable
+int window_width = 800, window_height = 600;
 
-int main()
+class processfighter_game : public global_game_state
 {
-  receiving_socket rs;
-  sf::RenderWindow window(sf::VideoMode(800, 600), "Process Fighter");
-  sf::CircleShape shape(10.f);
-  shape.setFillColor(sf::Color::Green);
-
-  game_state game;
-  out.initialize();
-  auto state = states::factory(game.state());
-  state->initialize();
-
-  while (window.isOpen()) {
-    sf::Event event;
-    while (window.pollEvent(event)) {
-      if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-        window.close();
-    }
-
-    if (state->next_state()) {
-      state = std::move(state->next_state());
-      state->initialize();
-    }
-
-    sf::Vector2f v1(0., 0.);
-    sf::CircleShape shape(10.f);
-    shape.setPosition(v1);
-
-    window.clear();
-    window.draw(shape);
-    out.draw(window);
-    state->draw(window);
-    window.display();
+public:
+  processfighter_game(std::string name) : global_game_state(name)
+  {
   }
-  return 0;
+
+  void run()
+  {
+
+    sf::RenderWindow window(sf::VideoMode(window_width, window_height), "Process Fighter");
+    sf::CircleShape shape(10.f);
+    shape.setFillColor(sf::Color::Green);
+
+    game_state game;
+    console_out_.initialize();
+    auto state = states::factory(game.state(), *this);
+    state->initialize();
+
+    while (window.isOpen()) {
+      sf::Event event;
+      while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+          window.close();
+      }
+
+      if (state->next_state()) {
+        state = std::move(state->next_state());
+        state->initialize();
+
+        std::stringstream ss;
+        ss << "Switching to state: " << static_cast<int>(state->type());
+        console_out_.log(ss.str());
+      }
+      state->handle(rs.messages());
+      state->tick();
+
+      window.clear();
+
+      sf::CircleShape shape(10.f);
+      sf::Vector2f v1(0., 0.);
+      shape.setPosition(v1);
+      window.draw(shape);
+      console_out_.draw(window);
+      state->draw(window);
+      window.display();
+    }
+  }
+};
+
+int main(int argc, char *argv[])
+{
+  std::string name = "anonymous";
+  if (argc > 1) name = std::string(argv[1]);
+  processfighter_game game(name);
+  game.run();
+
+  std::exit(0);
 }
 
