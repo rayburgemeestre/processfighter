@@ -6,6 +6,7 @@
 #pragma once
 
 #include "state_interface.hpp"
+#include "utils/menu.h"
 
 struct probed_opponent_type
 {
@@ -35,4 +36,5 @@ public:
 private:
   std::vector<probed_opponent_type> opponents_;
 
+  menu m;
 };

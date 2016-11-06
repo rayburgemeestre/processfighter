@@ -83,6 +83,30 @@ bool receiving_socket::bind(uint16_t port) {
             receive(m);
             break;
           }
+          case static_cast<sf::Int32>(messages::message_types::challenge_accepted): {
+            std::unique_ptr<messages::message_interface> m = std::make_unique<messages::challenge_accepted> (global_game_state_);
+            if (!m->parse(packet, ipaddr)) {
+              continue;
+            }
+            receive(m);
+            break;
+          }
+          case static_cast<sf::Int32>(messages::message_types::ping): {
+            std::unique_ptr<messages::message_interface> m = std::make_unique<messages::ping> (global_game_state_, 0);
+            if (!m->parse(packet, ipaddr)) {
+              continue;
+            }
+            receive(m);
+            break;
+          }
+          case static_cast<sf::Int32>(messages::message_types::pong): {
+            std::unique_ptr<messages::message_interface> m = std::make_unique<messages::pong> (global_game_state_, 0);
+            if (!m->parse(packet, ipaddr)) {
+              continue;
+            }
+            receive(m);
+            break;
+          }
         }
         if (id) global_game_state_.console_out().log(ss.str());
         std::cout << ss.str() << std::endl;

@@ -8,12 +8,12 @@
 #include "state_interface.hpp"
 
 #include "states/selecting.h" // for struct probed_opponent_type
-#include "menu.h"
+#include <deque>
 
-class waiting : public state_interface
+class countdown : public state_interface
 {
 public:
-  waiting(global_game_state &gs);
+  countdown(global_game_state &gs);
 
   void initialize();
   void handle(std::vector<std::unique_ptr<messages::message_interface>> msgs) override;
@@ -24,5 +24,6 @@ public:
 
 private:
   probed_opponent_type opponent_;
-  menu menu_;
+  std::chrono::time_point<std::chrono::high_resolution_clock> heartbeat_;
+  std::deque<double> lag_;
 };

@@ -12,6 +12,7 @@
 #include "font.h"
 
 #include <SFML/Graphics.hpp>
+#include <global_game_state.h>
 
 menu::menu(size_t window_width, size_t window_height)
   : window_width_(window_width), window_height_(window_height)
@@ -40,7 +41,6 @@ void menu::render(sf::RenderTarget & render_target)
   auto start_x = (window_width_ / 2) - (total_width / 2.0);
   auto start_y = (window_height_ / 2) - (total_height / 2.0) + 50.;
   size_t index = 0;
-  static std::function<void()> function_selected = nullptr;
   for (int i=0; i<num_rects; i++) {
     sf::RectangleShape rect(rect_size);
     for (int j=0; j<num_cols; j++) {
@@ -58,8 +58,8 @@ void menu::render(sf::RenderTarget & render_target)
         sf::Vector2i position = sf::Mouse::getPosition(static_cast<sf::RenderWindow &>(render_target));
         if (rect.getGlobalBounds().contains(position.x, position.y)) {
           function_selected();
+          function_selected = nullptr;
         }
-        function_selected = nullptr;
       }
 
       render_target.draw(rect);

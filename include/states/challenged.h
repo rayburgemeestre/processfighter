@@ -6,14 +6,14 @@
 #pragma once
 
 #include "state_interface.hpp"
-
-#include "states/selecting.h" // for struct probed_opponent_type
 #include "menu.h"
 
-class waiting : public state_interface
+#include "states/selecting.h" // for struct probed_opponent_type
+
+class challenged : public state_interface
 {
 public:
-  waiting(global_game_state &gs);
+  challenged(global_game_state &gs);
 
   void initialize();
   void handle(std::vector<std::unique_ptr<messages::message_interface>> msgs) override;

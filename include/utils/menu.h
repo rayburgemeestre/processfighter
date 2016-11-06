@@ -35,4 +35,5 @@ private:
 
   size_t window_width_;
   size_t window_height_;
+  std::function<void()> function_selected;
 };

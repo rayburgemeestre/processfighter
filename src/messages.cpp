@@ -96,4 +96,49 @@ namespace messages {
   {
     return name_;
   }
+
+  challenge_accepted::challenge_accepted(global_game_state &state) : message_interface(state, message_types::challenge_accepted)
+  {
+    packet_ << global_state_.name();
+  }
+  bool challenge_accepted::parse_msg(sf::Packet &packet_in)
+  {
+    return true;
+  }
+
+  ping::ping(global_game_state &state, sf::Int64 payload) : message_interface(state, message_types::ping),
+                                                            payload_(0)
+  {
+    packet_ << payload;
+  }
+  bool ping::parse_msg(sf::Packet &packet_in)
+  {
+    if (!(packet_in >> payload_))
+      return false;
+
+    return true;
+  }
+  sf::Int64 ping::payload()
+  {
+    return payload_;
+  }
+
+  pong::pong(global_game_state &state, sf::Int64 payload) : message_interface(state, message_types::pong),
+                                                            payload_(0)
+  {
+    packet_ << payload;
+  }
+  bool pong::parse_msg(sf::Packet &packet_in)
+  {
+    if (!(packet_in >> payload_))
+      return false;
+
+    return true;
+  }
+  sf::Int64 pong::payload()
+  {
+    return payload_;
+  }
+
+
 }

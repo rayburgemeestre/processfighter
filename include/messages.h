@@ -19,7 +19,11 @@ namespace messages
     probe = 1000,
     probe_response,
 
-    challenge = 2000
+    challenge = 2000,
+    challenge_accepted,
+
+    ping = 3000,
+    pong,
   };
 
   class message_interface
@@ -80,5 +84,31 @@ namespace messages
     std::string name();
   private:
     std::string name_;
+  };
+
+  class challenge_accepted : public message_interface
+  {
+  public:
+    challenge_accepted(global_game_state & state);
+    bool parse_msg(sf::Packet & packet_in) override;
+  };
+
+  class ping : public message_interface
+  {
+  public:
+    ping(global_game_state & state, sf::Int64 payload);
+    bool parse_msg(sf::Packet & packet_in) override;
+    sf::Int64 payload();
+  private:
+    sf::Int64  payload_;
+  };
+  class pong : public message_interface
+  {
+  public:
+    pong(global_game_state & state, sf::Int64 payload);
+    bool parse_msg(sf::Packet & packet_in) override;
+    sf::Int64 payload();
+  private:
+    sf::Int64 payload_;
   };
 }
