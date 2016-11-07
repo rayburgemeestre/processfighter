@@ -65,7 +65,7 @@ void countdown::handle(std::vector<std::unique_ptr<messages::message_interface>>
 void countdown::tick()
 {
   auto current_time = std::chrono::high_resolution_clock::now();
-  std::chrono::duration<double, std::milli> elapsed_total = current_time - begin_;
+  // std::chrono::duration<double, std::milli> elapsed_total = current_time - begin_;
   std::chrono::duration<double, std::milli> elapsed_hb = current_time - heartbeat_;
   if (elapsed_hb.count() > 100) {
     if (sizeof(current_time) == sizeof(sf::Int64)) {

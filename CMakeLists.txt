@@ -3,10 +3,11 @@ project(processfighter)
 
 include("cmake/gtestmockscript.cmake")
 
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 find_package(Threads)
-find_package(OpenMP)
+#find_package(OpenMP)
+#SET(PLATFORM_SPECIFIC_LIBS "-lpthread")
 
 find_package(SFML 1 COMPONENTS system window graphics network audio REQUIRED)
 
@@ -29,6 +30,7 @@ add_executable(processfighter ${processfighter_SOURCES})
 
 target_link_libraries(processfighter ${SFML_LIBRARIES})
 target_link_libraries(processfighter ${PROJECT_SOURCE_DIR}/libs/tiny-process-library/build/libtiny-process-library.a)
+target_link_libraries(processfighter ${CMAKE_THREAD_LIBS_INIT})
 
 install (TARGETS processfighter DESTINATION bin)
 

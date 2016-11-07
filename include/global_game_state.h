@@ -16,7 +16,7 @@ public:
   sf::UdpSocket &send_socket();
   sf::UdpSocket &recv_socket();
   size_t my_udp_port();
-  size_t unique_id();
+  sf::Int64 unique_id();
   std::string name();
 
 protected:

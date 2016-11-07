@@ -47,6 +47,7 @@ void initializing::initialize()
     }
     // for debugging purposes add local dev machine
     probing_state->probe_opponent(opponent_type{global_game_state_.unique_id(), "memyself", "10.75.99.6"});
+    probing_state->probe_opponent(opponent_type{global_game_state_.unique_id(), "memyself2", "10.2.182.47"});
     next_state_ = std::move(new_state);
   }
 }

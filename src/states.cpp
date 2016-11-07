@@ -29,4 +29,5 @@ std::unique_ptr<state_interface> states::factory(game_state::state_type state, g
     default:
       break;
   }
+  return nullptr;
 }

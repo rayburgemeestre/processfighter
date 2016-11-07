@@ -33,7 +33,7 @@ size_t global_game_state::my_udp_port()
   return my_udp_port_;
 }
 
-size_t global_game_state::unique_id()
+sf::Int64 global_game_state::unique_id()
 {
   if (unique_id_ == 0) {
     std::random_device r;

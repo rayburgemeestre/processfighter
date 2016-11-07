@@ -15,7 +15,7 @@ class waiting : public state_interface
 public:
   waiting(global_game_state &gs);
 
-  void initialize();
+  void initialize() override;
   void handle(std::vector<std::unique_ptr<messages::message_interface>> msgs) override;
   void tick() override;
   void draw(sf::RenderTarget &renderTarget) override;
