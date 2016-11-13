@@ -92,6 +92,8 @@ void fighting::tick()
   }
   global_game_state_.my_ship().left(sf::Keyboard::isKeyPressed(sf::Keyboard::Left), current_time);
   global_game_state_.my_ship().right(sf::Keyboard::isKeyPressed(sf::Keyboard::Right), current_time);
+  global_game_state_.my_ship().fire(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) ||
+                                    sf::Keyboard::isKeyPressed(sf::Keyboard::Space), current_time);
 }
 
 void fighting::draw(sf::RenderTarget &renderTarget)

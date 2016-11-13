@@ -16,6 +16,8 @@ enum class ship_type
   bottom_ship
 };
 
+class global_game_state;
+
 class ship
 {
 public:
@@ -26,10 +28,11 @@ public:
   void render(sf::RenderTarget &render_target);
   void set_position(float x, float y);
 
-  void calculate();
+  void calculate(global_game_state &state);
 
   void left(bool value, std::chrono::time_point<std::chrono::high_resolution_clock> current);
   void right(bool value, std::chrono::time_point<std::chrono::high_resolution_clock> current);
+  void fire(bool value, std::chrono::time_point<std::chrono::high_resolution_clock> current);
 
 private:
 
@@ -39,10 +42,12 @@ private:
 
   bool is_left_ = false;
   bool is_right_ = false;
+  bool is_fire_ = false;
   std::chrono::time_point<std::chrono::high_resolution_clock> begin_;
   double elapsed_ = 0.0f;
   std::chrono::time_point<std::chrono::high_resolution_clock> left_;
   std::chrono::time_point<std::chrono::high_resolution_clock> right_;
+  std::chrono::time_point<std::chrono::high_resolution_clock> fire_;
   std::chrono::time_point<std::chrono::high_resolution_clock> idle_;
   double elapsed_idle_ = 0.0f;
   sf::Vector2f velocity_;

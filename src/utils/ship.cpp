@@ -6,6 +6,7 @@
 #include "utils/ship.h"
 #include "ship_png.h"
 #include "ship2_png.h"
+#include "global_game_state.h"
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
@@ -91,7 +92,7 @@ void ship::render(sf::RenderTarget &render_target)
   position_.y = enemy_y;
 }
 
-void ship::calculate()
+void ship::calculate(global_game_state &state)
 {
   auto current_time = std::chrono::high_resolution_clock::now();
   auto set_idle = [=](){
@@ -99,16 +100,25 @@ void ship::calculate()
     std::chrono::duration<double, std::milli> elapsed_idle = current_time - idle_;
     elapsed_idle_ = elapsed_idle.count();
   };
+  if (is_fire_) {
+    std::chrono::duration<double, std::milli> elapsed_fire = current_time - fire_;
+    if (elapsed_fire.count() > 200) {
+      state.fire(position_, velocity_);
+      fire_ = current_time;
+    }
+  }
   if (is_left_) {
     std::chrono::duration<double, std::milli> elapsed_left = current_time - left_;
     velocity_.x = -1 * std::min(static_cast<float>(elapsed_left.count() / 1000.f), 1.f);
     set_idle();
+    is_right_ = false;
     return;
   }
   if (is_right_) {
     std::chrono::duration<double, std::milli> elapsed_right = current_time - right_;
     velocity_.x = std::min(static_cast<float>(elapsed_right.count() / 1000.f), 1.f);
     set_idle();
+    is_left_ = false;
     return;
   }
 
@@ -132,4 +142,8 @@ void ship::right(bool value, std::chrono::time_point<std::chrono::high_resolutio
     right_ = current;
   }
   is_right_ = value;
+}
+void ship::fire(bool value, std::chrono::time_point<std::chrono::high_resolution_clock> current)
+{
+  is_fire_ = value;
 }

@@ -80,3 +80,13 @@ ship & global_game_state::enemy_ship()
 {
   return enemy_ship_;
 }
+
+void global_game_state::fire(sf::Vector2f position, sf::Vector2f velocity)
+{
+  bullets_.push_back(bullet(position, velocity));
+}
+
+std::vector<bullet> & global_game_state::bullets()
+{
+  return bullets_;
+}

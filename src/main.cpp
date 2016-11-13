@@ -66,7 +66,11 @@ public:
 
       enemy_ship().render(window);
 
-      my_ship().calculate();
+      my_ship().calculate(*this);
+      for (auto &bullet : bullets()) {
+        bullet.calculate();
+        bullet.render(window);
+      }
 
       my_ship().render(window);
 

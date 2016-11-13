@@ -110,7 +110,14 @@ void selecting::tick()
 {
 }
 
+// While developing...
+
+#include <chrono>
 void selecting::draw(sf::RenderTarget &renderTarget)
 {
   m.render(renderTarget);
+  auto current_time = std::chrono::high_resolution_clock::now();
+  global_game_state_.my_ship().left(sf::Keyboard::isKeyPressed(sf::Keyboard::Left), current_time);
+  global_game_state_.my_ship().right(sf::Keyboard::isKeyPressed(sf::Keyboard::Right), current_time);
+  global_game_state_.my_ship().fire(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::Space), current_time);
 }

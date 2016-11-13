@@ -9,6 +9,7 @@
 #include "utils/console.h"
 #include "receiving_socket.h"
 #include "utils/ship.h"
+#include "utils/bullet.h"
 
 class global_game_state
 {
@@ -22,6 +23,9 @@ public:
 
   ship & my_ship();
   ship & enemy_ship();
+
+  void fire(sf::Vector2f position, sf::Vector2f velocity);
+  std::vector<bullet> &bullets();
 
 protected:
   global_game_state(std::string name);
@@ -42,4 +46,6 @@ private:
 
   ship ship_;
   ship enemy_ship_;
+
+  std::vector<bullet> bullets_;
 };
