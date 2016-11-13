@@ -49,6 +49,7 @@ void waiting::handle(std::vector<std::unique_ptr<messages::message_interface>> m
       auto countdown_state = dynamic_cast<countdown *>(new_state.get());
       if (countdown_state) {
         countdown_state->set_opponent(opponent_);
+        countdown_state->set_challenger(true);
         next_state_ = std::move(new_state);
       }
     }

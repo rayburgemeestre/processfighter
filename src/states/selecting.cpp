@@ -28,9 +28,7 @@ void selecting::initialize()
     next_state_ = std::move(new_state);
   });
 
-  std::stringstream ss;
-  auto str = ss.str();
-  m.add_item(str, [&](){
+  m.add_item(std::string("Challenge: yourself"), [&](){
     global_game_state_.console_out().log("You cannot challenge yourself!");
   });
 

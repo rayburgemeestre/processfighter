@@ -26,6 +26,7 @@ void challenged::initialize()
     auto countdown_state = dynamic_cast<countdown *>(new_state.get());
     if (countdown_state) {
       countdown_state->set_opponent(opponent_);
+      countdown_state->set_challenger(false);
       next_state_ = std::move(new_state);
     }
   });

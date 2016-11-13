@@ -44,7 +44,7 @@ bool receiving_socket::bind(uint16_t port) {
       if (global_game_state_.recv_socket().receive(packet, ipaddr, port) == sf::Socket::Done) {
         if (!(packet >> id)) {
           if (id)
-            global_game_state_.console_out().log("DEBUG: error reading packet..");
+            std::cout << "DEBUG: error reading packet..";
           continue;
         }
         std::stringstream ss;
@@ -108,7 +108,6 @@ bool receiving_socket::bind(uint16_t port) {
             break;
           }
         }
-        if (id) global_game_state_.console_out().log(ss.str());
         std::cout << ss.str() << std::endl;
       }
     }

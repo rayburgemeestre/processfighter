@@ -1,4 +1,3 @@
-#include "states/countdown.h"
 #include "states/fighting.h"
 
 #include <iostream>
@@ -10,42 +9,35 @@
 #include "global_game_state.h"
 
 #include <iterator>
-#include "font.h"
 
 extern int window_width;
 extern int window_height;
 
-countdown::countdown(global_game_state &gs)
-  : state_interface(gs, game_state::state_type::countdown),
+fighting::fighting(global_game_state &gs)
+  : state_interface(gs, game_state::state_type::fighting),
     heartbeat_(std::chrono::high_resolution_clock::now())
 {
 }
 
-void countdown::initialize()
+extern float i;
+void fighting::initialize()
 {
   messages::challenge_accepted ca(global_game_state_);
   global_game_state_.send_socket().send(ca.packet(), opponent_.ip, opponent_.port);
-  if (!font_.loadFromMemory(Monaco_Linux_Powerline_ttf, Monaco_Linux_Powerline_ttf_len)) {
-    std::cout << "Could not initialize font in memory.." << std::endl;
-  }
-  text_.setFont(font_); // font is a sf::Font
-  text_.setString("");
-  text_.setCharacterSize(52); // in pixels, not points!
-  text_.setColor(sf::Color::Red);
-  text_.setStyle(sf::Text::Bold);
+  i = 0;
 }
 
-void countdown::set_opponent(probed_opponent_type opp)
+void fighting::set_opponent(probed_opponent_type opp)
 {
   opponent_ = opp;
 }
 
-void countdown::set_challenger(bool is_challenger)
+void fighting::set_lag(std::deque<double> &lag)
 {
-  is_challenger_ = is_challenger;
+  lag_ = lag;
 }
 
-void countdown::handle(std::vector<std::unique_ptr<messages::message_interface>> msgs)
+void fighting::handle(std::vector<std::unique_ptr<messages::message_interface>> msgs)
 {
   for (auto &msg : msgs) {
     auto ping_msg = dynamic_cast<messages::ping *>(msg.get());
@@ -76,7 +68,7 @@ void countdown::handle(std::vector<std::unique_ptr<messages::message_interface>>
   }
 }
 
-void countdown::tick()
+void fighting::tick()
 {
   auto current_time = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double, std::milli> elapsed_total = current_time - begin_;
@@ -102,13 +94,6 @@ void countdown::tick()
   }
 }
 
-
-void countdown::draw(sf::RenderTarget &renderTarget)
+void fighting::draw(sf::RenderTarget &renderTarget)
 {
-  auto current_time = std::chrono::high_resolution_clock::now();
-  std::chrono::duration<double, std::milli> elapsed_total = current_time - begin_;
-  int count = static_cast<int>(elapsed_total.count() / 1000);
-  text_.setPosition(window_width / 2., window_height / 2.);
-  text_.setString(std::to_string(3 - count));
-  renderTarget.draw(text_);
 }

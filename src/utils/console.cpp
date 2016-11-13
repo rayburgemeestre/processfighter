@@ -38,7 +38,8 @@ void console::draw(sf::RenderTarget &renderTarget)
 {
   text_.setPosition(0, 0);
   for (const auto &line : console_lines_) {
-    text_.setString(line);
+    const sf::String str(line);
+    text_.setString(str);
     text_.move(0, 20);
     renderTarget.draw(text_);
   }

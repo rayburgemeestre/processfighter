@@ -8,6 +8,7 @@
 #include "SFML/Network.hpp"
 #include "utils/console.h"
 #include "receiving_socket.h"
+#include "utils/ship.h"
 
 class global_game_state
 {
@@ -18,6 +19,9 @@ public:
   size_t my_udp_port();
   sf::Int64 unique_id();
   std::string name();
+
+  ship & my_ship();
+  ship & enemy_ship();
 
 protected:
   global_game_state(std::string name);
@@ -30,6 +34,12 @@ protected:
   sf::UdpSocket main_sending_socket_;
   console console_out_;
 
+  sf::Sprite &ship_sprite();
+  sf::Sprite &enemy_ship_sprite();
+
 private:
   std::string name_;
+
+  ship ship_;
+  ship enemy_ship_;
 };

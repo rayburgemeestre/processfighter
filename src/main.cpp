@@ -16,6 +16,8 @@
 // TODO: perhaps make this configurable
 int window_width = 800, window_height = 600;
 
+float i = 0;
+
 class processfighter_game : public global_game_state
 {
 public:
@@ -60,6 +62,15 @@ public:
       window.draw(shape);
       console_out_.draw(window);
       state->draw(window);
+
+      i += 0.01;
+
+      enemy_ship().set_position(window_width / 2.f, (256 / 4.f));
+      enemy_ship().render(window);
+
+      my_ship().set_position(window_width / 2.f, window_height - (256 / 4.f));
+      my_ship().render(window);
+
       window.display();
     }
   }

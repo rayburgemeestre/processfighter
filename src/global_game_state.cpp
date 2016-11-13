@@ -7,9 +7,12 @@
 #include <iostream>
 #include <random>
 #include <limits>
+#include "utils/ship.h"
 
 global_game_state::global_game_state(std::string name)
-   : console_out_(5), rs(*this), name_(name)
+   : console_out_(5), rs(*this), name_(name),
+     ship_(ship_type::bottom_ship),
+     enemy_ship_(ship_type::top_ship)
 {
   uint16_t port = 7777;
   if (rs.bind(port)) {
@@ -66,4 +69,14 @@ sf::UdpSocket &global_game_state::recv_socket()
 std::string global_game_state::name()
 {
   return name_;
+}
+
+ship & global_game_state::my_ship()
+{
+  return ship_;
+}
+
+ship & global_game_state::enemy_ship()
+{
+  return enemy_ship_;
 }

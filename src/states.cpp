@@ -10,6 +10,7 @@
 #include "states/waiting.h"
 #include "states/challenged.h"
 #include "states/countdown.h"
+#include "states/fighting.h"
 
 std::unique_ptr<state_interface> states::factory(game_state::state_type state, global_game_state &gs)
 {
@@ -26,6 +27,8 @@ std::unique_ptr<state_interface> states::factory(game_state::state_type state, g
       return std::make_unique<challenged>(gs);
     case game_state::state_type::countdown:
       return std::make_unique<countdown>(gs);
+    case game_state::state_type::fighting:
+      return std::make_unique<fighting>(gs);
     default:
       break;
   }
