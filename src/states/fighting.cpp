@@ -19,12 +19,10 @@ fighting::fighting(global_game_state &gs)
 {
 }
 
-extern float i;
 void fighting::initialize()
 {
   messages::challenge_accepted ca(global_game_state_);
   global_game_state_.send_socket().send(ca.packet(), opponent_.ip, opponent_.port);
-  i = 0;
 }
 
 void fighting::set_opponent(probed_opponent_type opp)
@@ -92,6 +90,8 @@ void fighting::tick()
       heartbeat_ = current_time;
     }
   }
+  global_game_state_.my_ship().left(sf::Keyboard::isKeyPressed(sf::Keyboard::Left), current_time);
+  global_game_state_.my_ship().right(sf::Keyboard::isKeyPressed(sf::Keyboard::Right), current_time);
 }
 
 void fighting::draw(sf::RenderTarget &renderTarget)

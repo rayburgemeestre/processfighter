@@ -48,7 +48,7 @@ bool receiving_socket::bind(uint16_t port) {
           continue;
         }
         std::stringstream ss;
-        ss << "Got packet: " << id << " " << "ipaddr = " << ipaddr << " port = " << port;
+        // ss << "Got packet: " << id << " " << "ipaddr = " << ipaddr << " port = " << port;
         switch (id) {
           case static_cast<sf::Int32>(messages::message_types::shutdown): {
             messages::shutdown s(global_game_state_);
@@ -108,7 +108,7 @@ bool receiving_socket::bind(uint16_t port) {
             break;
           }
         }
-        std::cout << ss.str() << std::endl;
+        //std::cout << ss.str() << std::endl;
       }
     }
   });

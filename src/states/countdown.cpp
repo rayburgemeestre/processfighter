@@ -100,6 +100,8 @@ void countdown::tick()
       heartbeat_ = current_time;
     }
   }
+  global_game_state_.my_ship().left(sf::Keyboard::isKeyPressed(sf::Keyboard::Left), current_time);
+  global_game_state_.my_ship().right(sf::Keyboard::isKeyPressed(sf::Keyboard::Right), current_time);
 }
 
 
